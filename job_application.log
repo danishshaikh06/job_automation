@@ -1,0 +1,85 @@
+2025-04-12 17:45:34,333 - ERROR - Error during job search: Message: 
+Stacktrace:
+	GetHandleVerifier [0x00007FF744CB5335+78597]
+	GetHandleVerifier [0x00007FF744CB5390+78688]
+	(No symbol) [0x00007FF744A691AA]
+	(No symbol) [0x00007FF744ABF149]
+	(No symbol) [0x00007FF744ABF3FC]
+	(No symbol) [0x00007FF744B12467]
+	(No symbol) [0x00007FF744AE712F]
+	(No symbol) [0x00007FF744B0F2BB]
+	(No symbol) [0x00007FF744AE6EC3]
+	(No symbol) [0x00007FF744AB03F8]
+	(No symbol) [0x00007FF744AB1163]
+	GetHandleVerifier [0x00007FF744F5EEED+2870973]
+	GetHandleVerifier [0x00007FF744F59698+2848360]
+	GetHandleVerifier [0x00007FF744F76973+2967875]
+	GetHandleVerifier [0x00007FF744CD017A+188746]
+	GetHandleVerifier [0x00007FF744CD845F+222255]
+	GetHandleVerifier [0x00007FF744CBD2B4+111236]
+	GetHandleVerifier [0x00007FF744CBD462+111666]
+	GetHandleVerifier [0x00007FF744CA3589+5465]
+	BaseThreadInitThunk [0x00007FF91155257D+29]
+	RtlUserThreadStart [0x00007FF9135EAA58+40]
+
+2025-04-12 17:49:22,938 - INFO - Found skills: Python, Python Programming, TensorFlow, Artificial Intelligence, Machine Learning, Deep Learning, Web Programming, Keras, Java, Java Programming, Data Structures, Neural Network, Database Management System, Pandas, Pytorch, NumPy, C, C Programming, WordPress Development, Core Java, Advance Java, Spring Framework, JavaScript, Django
+2025-04-12 17:49:24,337 - INFO - Navigating to LinkedIn login page
+2025-04-12 17:50:09,265 - INFO - Verifying login
+2025-04-12 17:50:09,300 - INFO - Login successful
+2025-04-12 17:50:09,300 - INFO - Navigating to jobs page
+2025-04-12 17:50:11,684 - INFO - Waiting for jobs page to load
+2025-04-12 17:50:27,177 - ERROR - Unexpected error: Message: 
+Stacktrace:
+	GetHandleVerifier [0x00007FF744CB5335+78597]
+	GetHandleVerifier [0x00007FF744CB5390+78688]
+	(No symbol) [0x00007FF744A691AA]
+	(No symbol) [0x00007FF744ABF149]
+	(No symbol) [0x00007FF744ABF3FC]
+	(No symbol) [0x00007FF744B12467]
+	(No symbol) [0x00007FF744AE712F]
+	(No symbol) [0x00007FF744B0F2BB]
+	(No symbol) [0x00007FF744AE6EC3]
+	(No symbol) [0x00007FF744AB03F8]
+	(No symbol) [0x00007FF744AB1163]
+	GetHandleVerifier [0x00007FF744F5EEED+2870973]
+	GetHandleVerifier [0x00007FF744F59698+2848360]
+	GetHandleVerifier [0x00007FF744F76973+2967875]
+	GetHandleVerifier [0x00007FF744CD017A+188746]
+	GetHandleVerifier [0x00007FF744CD845F+222255]
+	GetHandleVerifier [0x00007FF744CBD2B4+111236]
+	GetHandleVerifier [0x00007FF744CBD462+111666]
+	GetHandleVerifier [0x00007FF744CA3589+5465]
+	BaseThreadInitThunk [0x00007FF91155257D+29]
+	RtlUserThreadStart [0x00007FF9135EAA58+40]
+
+2025-04-12 17:51:08,714 - INFO - Browser closed
+2025-04-12 17:53:49,881 - INFO - Attempting to read resume
+2025-04-12 17:53:49,899 - INFO - Extracting skills from resume
+2025-04-12 17:53:49,904 - INFO - Found skills: Python, Python Programming, TensorFlow, Artificial Intelligence, Machine Learning, Deep Learning, Web Programming, Keras, Java, Java Programming, Data Structures, Neural Network, Database Management System, Pandas, Pytorch, NumPy, C, C Programming, WordPress Development, Core Java, Advance Java, Spring Framework, JavaScript, Django
+2025-04-12 17:53:49,904 - INFO - Setting up WebDriver
+2025-04-12 17:53:51,575 - INFO - ChromeDriver initialized successfully
+2025-04-12 17:53:51,575 - INFO - Navigating to LinkedIn login page
+2025-04-12 17:53:53,515 - INFO - Login page loaded successfully
+2025-04-12 17:55:53,988 - INFO - Verifying login
+2025-04-12 17:55:54,054 - INFO - Login successful
+2025-04-12 17:55:54,054 - INFO - Navigating to jobs page
+2025-04-12 17:56:15,962 - ERROR - Jobs page load failed
+2025-04-12 17:56:22,611 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002A1F98FD100>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/cbf8ef0a6c4e9cca26df3f7a4847aba4
+2025-04-12 17:56:26,673 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002A1F98FCF80>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/cbf8ef0a6c4e9cca26df3f7a4847aba4
+2025-04-12 17:56:30,798 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002A1F98FE8A0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/cbf8ef0a6c4e9cca26df3f7a4847aba4
+2025-04-12 17:56:38,963 - INFO - Browser closed
+2025-04-16 16:24:28,553 - INFO - Attempting to read resume
+2025-04-16 16:24:28,570 - INFO - Extracting skills from resume
+2025-04-16 16:24:28,571 - INFO - Found skills: Python, Python Programming, TensorFlow, Artificial Intelligence, Machine Learning, Deep Learning, Web Programming, Keras, Java, Java Programming, Data Structures, Neural Network, Database Management System, Pandas, Pytorch, NumPy, C, C Programming, WordPress Development, Core Java, Advance Java, Spring Framework, JavaScript, Django
+2025-04-16 16:24:28,571 - INFO - Setting up WebDriver
+2025-04-16 16:24:36,958 - INFO - ChromeDriver initialized successfully
+2025-04-16 16:24:36,958 - INFO - Navigating to LinkedIn login page
+2025-04-16 16:24:38,989 - INFO - Login page loaded successfully
+2025-04-16 16:25:34,596 - INFO - Verifying login
+2025-04-16 16:25:34,641 - INFO - Login successful
+2025-04-16 16:25:34,641 - INFO - Navigating to jobs page
+2025-04-16 16:25:53,108 - ERROR - Jobs page load failed
+2025-04-16 16:25:59,689 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000022CE706D670>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/544ee0d7890e94e7e3bdf90a907ad288
+2025-04-16 16:26:03,797 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000022CE706D040>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/544ee0d7890e94e7e3bdf90a907ad288
+2025-04-16 16:26:07,871 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000022CE706EBA0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/544ee0d7890e94e7e3bdf90a907ad288
+2025-04-16 16:26:16,062 - INFO - Browser closed
