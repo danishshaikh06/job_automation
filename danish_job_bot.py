@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium_stealth import stealth
 
 def setup_driver():
     """Set up the Chrome WebDriver with anti-detection settings"""
@@ -16,6 +17,15 @@ def setup_driver():
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
     options.add_experimental_option('useAutomationExtension', False)
     driver = webdriver.Chrome(options=options)
+    # Apply stealth settings
+    stealth(driver,
+            languages=["en-US", "en"],
+            vendor="Google Inc.",
+            platform="Win32",
+            webgl_vendor="Intel Inc.",
+            renderer="Intel Iris OpenGL Engine",
+            fix_hairline=True,
+            )
     driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
     return driver
 
@@ -88,16 +98,47 @@ def upload_file(driver, file_path, retry_attempts=3):
     
     return False
 
-def fill_form_fields(driver):
-    """Fill common application form fields"""
-    field_mapping = {
-        "phone": "9004177451",
-        "mobile": "9004177451", 
-        "city": "Mumbai",
-        "location": "Mumbai",
-        "postal": "400001",
-        "zip": "400001"
-    }
+def get_user_field_mapping():
+    """Get field mapping from user input"""
+    print("Enter your form field values (press Enter to skip any field):")
+    
+    field_mapping = {}
+    
+    # Define the fields to collect
+    fields_to_collect = [
+        ("phone", "Phone number"),
+        ("mobile", "Mobile number"), 
+        ("city", "City"),
+        ("location", "Location"),
+        ("postal", "Postal code"),
+        ("zip", "ZIP code"),
+        ("name", "Full name"),
+        ("email", "Email address"),
+        ("address", "Address"),
+        ("state", "State"),
+        ("country", "Country")
+    ]
+    
+    for field_key, field_description in fields_to_collect:
+        value = input(f"{field_description}: ").strip()
+        if value:  # Only add non-empty values
+            field_mapping[field_key] = value
+    
+    return field_mapping
+
+def fill_form_fields(driver, field_mapping=None):
+    """Fill common application form fields with user-provided or default values"""
+    
+    # If no field mapping provided, get it from user
+    if field_mapping is None:
+        field_mapping = get_user_field_mapping()
+    
+    # If still empty, return
+    if not field_mapping:
+        print("No field mapping provided. Skipping form filling.")
+        return
+    
+    print(f"\nUsing field mapping: {field_mapping}")
     
     # Fill text inputs
     inputs = driver.find_elements(By.TAG_NAME, "input")
@@ -116,9 +157,11 @@ def fill_form_fields(driver):
                 if (key in field_id or key in field_name or key in placeholder) and field.is_enabled():
                     field.clear()
                     field.send_keys(value)
-                    print(f"✓ Filled field: {key}")
+                    print(f"✓ Filled field: {key} = {value}")
                     time.sleep(0.5)
-        except:
+                    break  # Break after first match to avoid duplicate fills
+        except Exception as e:
+            print(f"Error filling field: {e}")
             continue
     
     # Handle checkboxes (usually for terms agreement)
@@ -129,8 +172,34 @@ def fill_form_fields(driver):
                 checkbox.click()
                 print("✓ Checked a checkbox")
                 time.sleep(0.5)
-        except:
+        except Exception as e:
+            print(f"Error checking checkbox: {e}")
             continue
+
+# Alternative version: Pass field mapping as parameter
+def fill_form_fields_with_mapping(driver, phone="", mobile="", city="", location="", 
+                                postal="", zip_code="", name="", email="", address="", 
+                                state="", country=""):
+    """Fill form fields with individual parameters"""
+    
+    # Create field mapping from parameters
+    field_mapping = {}
+    
+    # Add non-empty values to mapping
+    if phone: field_mapping["phone"] = phone
+    if mobile: field_mapping["mobile"] = mobile
+    if city: field_mapping["city"] = city
+    if location: field_mapping["location"] = location
+    if postal: field_mapping["postal"] = postal
+    if zip_code: field_mapping["zip"] = zip_code
+    if name: field_mapping["name"] = name
+    if email: field_mapping["email"] = email
+    if address: field_mapping["address"] = address
+    if state: field_mapping["state"] = state
+    if country: field_mapping["country"] = country
+    
+    # Use the main function
+    fill_form_fields(driver, field_mapping)
 
 def is_application_successful(driver):
     """Check if the application was submitted successfully"""

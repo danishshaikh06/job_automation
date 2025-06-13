@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Job Hunter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to bottom right, #0f0c29, #302b63, #24243e);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background: #1e1b35;
+      padding: 2rem;
+      border-radius: 20px;
+      width: 400px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+    }
+    .title {
+      text-align: center;
+    }
+    .title h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+    .title p {
+      color: #aaa;
+      margin-bottom: 1rem;
+    }
+    .input-group {
+      margin-bottom: 1rem;
+    }
+    .input-group label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-weight: 600;
+    }
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 0.6rem;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      background: #2a2751;
+      color: white;
+    }
+    .button {
+      width: 100%;
+      padding: 0.8rem;
+      background: linear-gradient(to right, #9f44d3, #16a9ff);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    .button:hover {
+      opacity: 0.9;
+    }
+    .platforms {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      justify-content: center;
+    }
+    .platforms button {
+      flex: 1;
+      padding: 0.6rem;
+      background: #29264e;
+      border: 1px solid #444;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+    }
+    .spinner {
+      display: none;
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .results {
+      margin-top: 2rem;
+      background: #2e2b55;
+      padding: 1rem;
+      border-radius: 10px;
+    }
+    .job-result {
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #444;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="title">
+      <h1>⚡ AI Job Hunter</h1>
+      <p>Futuristic Job Application Assistant</p>
+    </div>
+    <form id="jobForm">
+      <div class="input-group">
+        <label>Upload Resume</label>
+        <input type="file" id="resume" required>
+      </div>
+      <div class="input-group">
+        <label>Job Search Term</label>
+        <input type="text" id="search_term" placeholder="Python Developer" required>
+      </div>
+      <div class="input-group">
+        <label>Location</label>
+        <input type="text" id="location" placeholder="Enter Indian city">
+      </div>
+      <div class="input-group">
+        <label>Experience Level</label>
+        <select id="experience_level">
+          <option value="">Select experience level</option>
+          <option>Entry level</option>
+          <option>Mid-Senior level</option>
+          <option>Director</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label>Job Type</label>
+        <select id="job_type">
+          <option value="">Select job type</option>
+          <option>Full-time</option>
+          <option>Part-time</option>
+          <option>Internship</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label>Date Posted</label>
+        <select id="date_posted">
+          <option value="">Select date</option>
+          <option>Past 24 hours</option>
+          <option>Past week</option>
+          <option>Past month</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label>Number of Jobs to Apply</label>
+        <input type="number" id="max_jobs" value="5" min="1" max="10">
+      </div>
+      <div class="platforms">
+        <button type="button" onclick="selectPlatform('linkedin')">📈 LinkedIn</button>
+        <button type="button" onclick="selectPlatform('indeed')">indeed</button>
+      </div>
+      <button type="submit" class="button">⚡ Launch Job Hunt</button>
+    </form>
+    <div class="spinner" id="spinner">Loading...</div>
+    <div class="results" id="results"></div>
+  </div>
+
+  <script>
+    let selectedPlatform = "linkedin";
+
+    function selectPlatform(platform) {
+      selectedPlatform = platform;
+    }
+
+    document.getElementById("jobForm").addEventListener("submit", async function(event) {
+      event.preventDefault();
+      const spinner = document.getElementById("spinner");
+      const results = document.getElementById("results");
+      spinner.style.display = "block";
+      results.innerHTML = "";
+
+      const data = {
+        search_term: document.getElementById("search_term").value,
+        resume_path: "C:/path/to/resume.pdf", // Replace or handle with upload logic
+        max_jobs: document.getElementById("max_jobs").value,
+        location: document.getElementById("location").value,
+        experience_level: document.getElementById("experience_level").value,
+        job_type: document.getElementById("job_type").value,
+        date_posted: document.getElementById("date_posted").value,
+        platform: selectedPlatform
+      };
+
+      const response = await fetch("https://job-automation-1.onrender.com/apply", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+      spinner.style.display = "none";
+
+      result.forEach(job => {
+        results.innerHTML += `<div class='job-result'><strong>${job.title}</strong><br>${job.company}<br>Status: ${job.status}</div>`;
+      });
+    });
+  </script>
+</body>
+</html>
