@@ -9,8 +9,13 @@ import base64
 
 app = Flask(__name__)
 
-# ✅ Allow CORS for all origins (you can restrict this later)
-CORS(app, origins=["*"])
+# ✅ Enhanced CORS configuration
+CORS(app, 
+     origins=["*"],
+     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+     allow_headers=["Content-Type", "Authorization", "X-Requested-With"],
+     supports_credentials=False
+)
 
 # Set up logging
 logging.basicConfig(
@@ -19,9 +24,29 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# ✅ Add explicit CORS headers to all responses
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,X-Requested-With')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
+
+# ✅ Handle preflight requests explicitly
+@app.before_request
+def handle_preflight():
+    if request.method == "OPTIONS":
+        response = jsonify({})
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add('Access-Control-Allow-Headers', "Content-Type,Authorization,X-Requested-With")
+        response.headers.add('Access-Control-Allow-Methods', "GET,PUT,POST,DELETE,OPTIONS")
+        return response
+
 @app.route("/apply", methods=["POST"])
 def apply():
     try:
+        logger.info(f"Received request from origin: {request.headers.get('Origin', 'Unknown')}")
+        
         # Handle both JSON and FormData requests
         if request.is_json:
             # Handle JSON data
@@ -147,7 +172,8 @@ def health():
         "status": "healthy", 
         "message": "Job bot API is running",
         "timestamp": datetime.now().isoformat(),
-        "environment": "cloud" if os.getenv('RENDER') else "local"
+        "environment": "cloud" if os.getenv('RENDER') else "local",
+        "cors_enabled": True
     })
 
 @app.route("/test", methods=["POST"])
@@ -174,6 +200,18 @@ def test_endpoint():
             "error": f"Browser test failed: {str(e)}"
         }), 500
 
+# ✅ Add a simple CORS test endpoint
+@app.route("/cors-test", methods=["GET", "POST", "OPTIONS"])
+def cors_test():
+    """Simple endpoint to test CORS functionality"""
+    return jsonify({
+        "message": "CORS test successful",
+        "method": request.method,
+        "origin": request.headers.get('Origin', 'No origin header'),
+        "timestamp": datetime.now().isoformat()
+    })
+
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
+    logger.info(f"Starting Flask app on port {port}")
     app.run(host="0.0.0.0", port=port, debug=False)
