@@ -9,12 +9,8 @@ import base64
 
 app = Flask(__name__)
 
-# ✅ Allow CORS for your Lovable project URL and localhost for testing
-CORS(app, origins=[
-    "https://e767f60a-7ae5-4f5d-8491-ef84c478d50c.lovableproject.com",
-    "http://localhost:3000",  # For local frontend testing
-    "http://127.0.0.1:3000"
-])
+# ✅ Allow CORS for all origins (you can restrict this later)
+CORS(app, origins=["*"])
 
 # Set up logging
 logging.basicConfig(
@@ -26,7 +22,29 @@ logger = logging.getLogger(__name__)
 @app.route("/apply", methods=["POST"])
 def apply():
     try:
-        data = request.json
+        # Handle both JSON and FormData requests
+        if request.is_json:
+            # Handle JSON data
+            data = request.json
+            logger.info("Received JSON request")
+        else:
+            # Handle FormData (file uploads)
+            data = request.form.to_dict()
+            logger.info("Received FormData request")
+            
+            # Handle file upload from FormData
+            resume_file = request.files.get('resume')
+            if resume_file:
+                # Save uploaded file to temporary location
+                temp_file = tempfile.NamedTemporaryFile(
+                    delete=False, 
+                    suffix='.pdf',
+                    prefix='resume_'
+                )
+                resume_file.save(temp_file.name)
+                data['resume_path'] = temp_file.name
+                logger.info(f"Saved uploaded resume to: {temp_file.name}")
+        
         logger.info(f"Received application request: {data.get('search_term', 'unknown')}")
         
         # Validate required fields
@@ -43,9 +61,9 @@ def apply():
         cover_letter_path = handle_file_upload(data.get("cover_letter_file"), data.get("cover_letter_path"), "cover_letter")
         
         # Validate max_jobs is reasonable
-        max_jobs = data.get("max_jobs", 5)
-        if not isinstance(max_jobs, int) or max_jobs < 1 or max_jobs > 20:  # Reduced limit for cloud
-            return jsonify({"error": "max_jobs must be between 1 and 20"}), 400
+        max_jobs = int(data.get("max_jobs", 5))
+        if max_jobs < 1 or max_jobs > 5:  # Limited to 5 as requested
+            return jsonify({"error": "max_jobs must be between 1 and 5"}), 400
         
         logger.info(f"Starting job application for: {data['search_term']}")
         
@@ -58,6 +76,7 @@ def apply():
             experience_level=data.get("experience_level", ""),
             job_type=data.get("job_type", ""),
             date_posted=data.get("date_posted", ""),
+            platform=data.get("platform", "linkedin"),  # Added platform parameter
             cover_letter_path=cover_letter_path or ""
         )
         
@@ -73,7 +92,8 @@ def apply():
             "success": False,
             "error": f"Application failed: {str(e)}",
             "applied_count": 0,
-            "total_processed": 0
+            "total_processed": 0,
+            "jobs": []  # Return empty jobs array for frontend
         }), 500
 
 def handle_file_upload(file_data, file_path, file_type):
