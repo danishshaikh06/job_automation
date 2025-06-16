@@ -101,7 +101,6 @@ def apply():
             experience_level=data.get("experience_level", ""),
             job_type=data.get("job_type", ""),
             date_posted=data.get("date_posted", ""),
-            platform=data.get("platform", "linkedin"),  # Added platform parameter
             cover_letter_path=cover_letter_path or ""
         )
         
