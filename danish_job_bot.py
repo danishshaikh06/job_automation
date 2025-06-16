@@ -922,8 +922,8 @@ def main():
     driver.quit()
 
 # Wrap main execution in a callable function
-def run_job_automation(search_term, resume_path, max_jobs=5,
-                       location="", experience_level="", job_type="", date_posted=""):
+def run_job_automation(search_term, resume_path, cover_letter_path, max_jobs, location, experience_level, job_type, date_posted, platform=None, username=None, password=None):
+
     driver = setup_driver()
     results = search_and_apply_for_jobs(
         driver,
